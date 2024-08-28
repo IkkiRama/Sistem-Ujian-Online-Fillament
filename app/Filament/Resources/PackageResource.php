@@ -8,6 +8,7 @@ use App\Models\Package;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Section;
@@ -89,11 +90,16 @@ class PackageResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-            ])
+                Action::make("Kerjakan")
+                    ->url(fn (Package $record): string => route('Tryout', $record))
+                    ->color("success")
+                    ->openUrlInNewTab()
+                    ->icon("heroicon-o-paper-airplane")
+                ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ])
             ]);
     }
 
@@ -108,6 +114,7 @@ class PackageResource extends Resource
     {
         return [
             'index' => Pages\ListPackages::route('/'),
+            // 'edit' => Pages\EditPackage::route('/{record}/edit'),
         ];
     }
 }

@@ -1,6 +1,7 @@
 <div>
     <div class="container">
         <div class="row">
+            <h4>{{ $package->name }}</h4>
             <div class="col-md-8">
                 <div id="question-container">
                     <div class="card question-card">
@@ -10,29 +11,14 @@
                         </div>
 
                         <div class="card-body">
-                            <h5 class="card-title">
-                                SOAL NO 2
-                            </h5>
-                            <p class="card-text">APA WARNA KIMAK?</p>
+                            <p class="card-text">{{ $currentQuestion->question->question }}</p>
+                            @foreach ($currentQuestion->question->options as $item)
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="question" value="">
-                                <label class="form-check-label">Merah</label>
+                                <label class="form-check-label">{{ $item->option_text }}</label>
                             </div>
+                            @endforeach
 
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="question" value="">
-                                <label class="form-check-label">Merah</label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="question" value="">
-                                <label class="form-check-label">Merah</label>
-                            </div>
-
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="question" value="">
-                                <label class="form-check-label">Merah</label>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -42,22 +28,9 @@
                     <div class="card-body">
                         <h5 class="card-title">Navigasi</h5>
                         <div class="btn-group-flex" role="group">
-                            <button type="button" class="btn btn-outline-primary">1</button>
-                            <button type="button" class="btn btn-outline-primary">1</button>
-                            <button type="button" class="btn btn-outline-primary">1</button>
-                            <button type="button" class="btn btn-outline-primary">1</button>
-                            <button type="button" class="btn btn-outline-primary">1</button>
-                            <button type="button" class="btn btn-outline-primary">1</button>
-                            <button type="button" class="btn btn-outline-primary">1</button>
-                            <button type="button" class="btn btn-outline-primary">1</button>
-                            <button type="button" class="btn btn-outline-primary">1</button>
-                            <button type="button" class="btn btn-outline-primary">1</button>
-                            <button type="button" class="btn btn-outline-primary">1</button>
-                            <button type="button" class="btn btn-outline-primary">1</button>
-                            <button type="button" class="btn btn-outline-primary">1</button>
-                            <button type="button" class="btn btn-outline-primary">1</button>
-                            <button type="button" class="btn btn-outline-primary">1</button>
-                            <button type="button" class="btn btn-outline-primary">1</button>
+                            @foreach ($questions as $index => $item)
+                                <button type="button" wire:click="goToQuestion('{{ $index }}')" class="btn btn-outline-primary">{{ $index+1 }}</button>
+                            @endforeach
                         </div>
                         <button type="button" class="btn btn-primary mt-3 w-100">Submit</button>
                     </div>
