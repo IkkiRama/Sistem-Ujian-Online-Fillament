@@ -2,14 +2,19 @@
 
 namespace App\Livewire;
 
+use App\Models\Tryout;
 use App\Models\Package;
+use App\Models\TryoutAnswer;
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
 
 class TryoutOnline extends Component
 {
 
+    public $tryout;
     public $package;
-    public $questions;
+    public $timeLeft;
+    public $questions; // per row yang ada di tabel package question
     public $currentPackageQuestion;
 
     function mount($id) {
@@ -23,6 +28,35 @@ class TryoutOnline extends Component
             }
         }
 
+        $this->tryout = Tryout::where('user_id', Auth::id())
+                        ->where('package_id', $this->package->id)
+                        ->whereNull('finished_at')
+                        ->first();
+
+
+        if (!$this->tryout) {
+            $stardedAt = now();
+            $durationInSecond = $this->package->duration * 60;
+
+            $this->tryout = Tryout::create([
+                'user_id' => Auth::id(),
+                'package_id' => $this->package->id,
+                'duration' => $durationInSecond,
+                'started_at' => $stardedAt,
+            ]);
+
+            foreach ($this->questions as $question) {
+                TryoutAnswer::create([
+                    'tryout_id' => $this->tryout->id,
+                    'question_id' => $question->question_id,
+                    'question_option_id' => null,
+                    'score' => 0,
+                ]);
+            }
+        }
+
+        $this->calculatedTimeLest();
+
     }
     public function render()
     {
@@ -31,13 +65,31 @@ class TryoutOnline extends Component
 
     function goToQuestion($package_question_id) {
         $this->currentPackageQuestion = $this->questions->where('id', $package_question_id)->first();
+        $this->calculatedTimeLest();
     }
 
     protected function calculatedTimeLest() {
+        if ($this->tryout->finished_at) {
+            $this->timeLeft = 0;
+            return;
+        }
+
+        $now = time();
+        $startedAt = strtotime($this->tryout->started_at);
+
+        $sisaWaktu = $now - $startedAt;
+
+        if ($sisaWaktu < 0) {
+            $this->timeLeft = 0;
+        }else{
+            $this->timeLeft = max(0, $this->tryout->duration - $sisaWaktu);
+        }
+
 
     }
 
     function saveAnswer($questionId, $optionId) {
-        
+        $this->calculatedTimeLest();
+
     }
 }

@@ -40,6 +40,11 @@
     </div>
     <script>
 
+        document.addEventListener("DOMContentLoaded", () => {
+            let timeLeft = {{ $timeLeft }}
+            startCountDown(timeLeft, document.querySelector("#time"))
+        })
+
         function startCountDown(duration, display) {
             let timer = duration, minutes, seconds
             setInterval(function() {
@@ -59,12 +64,5 @@
             }, 1000);
 
         }
-
-        window.addEventListener("load",function () {
-            console.log("asu");
-            const duration = 60 * 60
-            const display = document.querySelector("#time")
-            startCountDown(duration, display)
-        })
     </script>
 </div>
