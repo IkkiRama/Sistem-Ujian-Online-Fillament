@@ -11,8 +11,8 @@
                         </div>
 
                         <div class="card-body">
-                            <p class="card-text">{{ $currentQuestion->question->question }}</p>
-                            @foreach ($currentQuestion->question->options as $item)
+                            <p class="card-text">{{ $currentPackageQuestion->question->question }}</p>
+                            @foreach ($currentPackageQuestion->question->options as $item)
                             <div class="form-check">
                                 <input class="form-check-input" type="radio" name="question" value="">
                                 <label class="form-check-label">{{ $item->option_text }}</label>
@@ -29,7 +29,7 @@
                         <h5 class="card-title">Navigasi</h5>
                         <div class="btn-group-flex" role="group">
                             @foreach ($questions as $index => $item)
-                                <button type="button" wire:click="goToQuestion('{{ $index }}')" class="btn btn-outline-primary">{{ $index+1 }}</button>
+                                <button type="button" wire:click="goToQuestion('{{ $item->id }}')" class="btn btn-outline-primary">{{ $index+1 }}</button>
                             @endforeach
                         </div>
                         <button type="button" class="btn btn-primary mt-3 w-100">Submit</button>

@@ -5,12 +5,12 @@ namespace App\Livewire;
 use App\Models\Package;
 use Livewire\Component;
 
-class Tryout extends Component
+class TryoutOnline extends Component
 {
 
     public $package;
     public $questions;
-    public $currentQuestion;
+    public $currentPackageQuestion;
 
     function mount($id) {
         $this->package = Package::with("questions.question.options")->find($id);
@@ -19,7 +19,7 @@ class Tryout extends Component
             $this->questions = $this->package->questions;
 
             if ($this->questions->isNotEmpty()) {
-                $this->currentQuestion = $this->questions->first();
+                $this->currentPackageQuestion = $this->questions->first();
             }
         }
 
@@ -29,7 +29,15 @@ class Tryout extends Component
         return view('livewire.tryout');
     }
 
-    function goToQuestion($index) {
-        $this->currentQuestion = $this->questions[$index];
+    function goToQuestion($package_question_id) {
+        $this->currentPackageQuestion = $this->questions->where('id', $package_question_id)->first();
+    }
+
+    protected function calculatedTimeLest() {
+
+    }
+
+    function saveAnswer($questionId, $optionId) {
+        
     }
 }
