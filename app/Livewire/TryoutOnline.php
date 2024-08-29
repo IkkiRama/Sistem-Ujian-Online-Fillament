@@ -64,7 +64,7 @@ class TryoutOnline extends Component
             $this->selectedAnswers[$answer->question_id] = $answer->question_option_id;
         }
 
-        $this->calculatedTimeLest();
+        $this->calculatedTimeLeft();
 
     }
     public function render()
@@ -74,10 +74,10 @@ class TryoutOnline extends Component
 
     function goToQuestion($package_question_id) {
         $this->currentPackageQuestion = $this->questions->where('id', $package_question_id)->first();
-        $this->calculatedTimeLest();
+        $this->calculatedTimeLeft();
     }
 
-    protected function calculatedTimeLest() {
+    protected function calculatedTimeLeft() {
         if ($this->tryout->finished_at) {
             $this->timeLeft = 0;
             return;
@@ -119,7 +119,17 @@ class TryoutOnline extends Component
             $this->selectedAnswers[$answer->question_id] = $answer->question_option_id;
         }
 
-        $this->calculatedTimeLest();
+        $this->calculatedTimeLeft();
 
+    }
+
+    function submit() {
+        $this->tryout->update([
+            'finished_at' => now()
+        ]);
+
+        $this->calculatedTimeLeft();
+
+        session()->flash("message", "Data Berhasil di Simpan");
     }
 }
