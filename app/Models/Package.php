@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Tryout;
 use App\Models\Question;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,5 +16,10 @@ class Package extends Model
     public function questions(): HasMany
     {
         return $this->hasMany(PackageQuestion::class);
+    }
+
+    public function tryout(): HasMany
+    {
+        return $this->hasMany(Tryout::class);
     }
 }
