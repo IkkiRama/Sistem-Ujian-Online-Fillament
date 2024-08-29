@@ -14,7 +14,17 @@
                             <p class="card-text">{{ $currentPackageQuestion->question->question }}</p>
                             @foreach ($currentPackageQuestion->question->options as $item)
                             <div class="form-check">
-                                <input class="form-check-input" type="radio" name="question" value="">
+                                <input
+                                    wire:model="selectedAnswers.{{ $currentPackageQuestion->question_id }}"
+                                    wire:click="saveAnswer({{ $currentPackageQuestion->question_id }}, {{ $item->id }})"
+                                    class="form-check-input"
+                                    type="radio"
+                                    name="question"
+                                    value={{ $item->id }}
+                                    @if ($tryoutAnswers->isNotEmpty() || $tryoutAnswers->contains('question_option_id', $item->id))
+                                        checked
+                                    @endif
+                                    >
                                 <label class="form-check-label">{{ $item->option_text }}</label>
                             </div>
                             @endforeach
